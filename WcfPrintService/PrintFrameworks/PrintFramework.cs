@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace WcfPrintService
 {
-    abstract class PrintFramework
+    public abstract class PrintFramework
     {
+        protected string _filesPath => @"C:\Program Files (x86)\IIS Express\FilesToPrint\";
+
         public abstract void PrintAllPages(string fileName, string printerName);
 
         public abstract void PrintSelectedPages(string fileName, string printerName, string pages);
@@ -33,6 +32,10 @@ namespace WcfPrintService
                         Islocal = Convert.ToBoolean(printer.Properties["Local"].Value)
                     });
                 }
+            }
+            else
+            {
+                Logger.FileLogger.Log("The system did not detect connected printers");
             }
 
             return printers;

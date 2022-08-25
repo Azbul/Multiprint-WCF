@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Spire.Pdf.Print;
 using System.Drawing.Printing;
 
 namespace WcfPrintService
@@ -12,7 +13,7 @@ namespace WcfPrintService
 
         }
 
-        private void BeginPrint(object sender, PrintEventArgs e)
+        private void PrintingInProgress(object sender, PrintEventArgs e)
         {
             using (UserContext db = new UserContext())
             {
@@ -26,7 +27,7 @@ namespace WcfPrintService
             }
         }
 
-        private void EndPrint(object sender, PrintEventArgs e)
+        private void PrinterReady(object sender, PrintEventArgs e)
         {
             using (UserContext db = new UserContext())
             {
@@ -40,11 +41,11 @@ namespace WcfPrintService
             }
         }
 
-        public void SetEventsToPrintDocs(PrintDocument document, string printerName)
+        public void SetEventsToPrintDocs(PdfPrintSettings settings, string printerName)
         {
             _printerName = printerName;
-            document.BeginPrint += new PrintEventHandler(BeginPrint);
-            document.EndPrint += new PrintEventHandler(EndPrint);
+            settings.BeginPrint += new PrintEventHandler(PrintingInProgress);
+            settings.EndPrint += new PrintEventHandler(PrinterReady);
         }
     }
 }

@@ -1,80 +1,62 @@
 ﻿using System;
 using Spire.Pdf;
-using System.Management;
-using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace WcfPrintService
 {
-    public class SpirePrint
+    public class SpirePrint : PrintFramework
     {
-        public void PrintAllPages(string fileName, string printerName)
+        public override void PrintAllPages(string fileName, string printerName)
         {
             PdfDocument pdfDoc = new PdfDocument();
-            
             pdfDoc.LoadFromFile(fileName);
-            pdfDoc.PrinterName = printerName;
-            new PrintEvents().SetEventsToPrintDocs(pdfDoc.PrintDocument, printerName);
-            pdfDoc.PrintDocument.Print();
+            pdfDoc.PrintSettings.PrinterName = printerName;
+            new PrintEvents().SetEventsToPrintDocs(pdfDoc.PrintSettings, printerName);
+            pdfDoc.Print();
         }
 
-        public void PrintSelectedPages(string  fileName, string printerName, string pages)
+        public override void PrintSelectedPages(string fileName, string printerName, string pages)
         {
             PdfDocument doc = new PdfDocument();
             doc.LoadFromFile(fileName);
-            doc.PrinterName = printerName;
+            doc.PrintSettings.PrinterName = printerName;
             SetPrintPages(pages, doc);
-            new PrintEvents().SetEventsToPrintDocs(doc.PrintDocument, printerName);
-            doc.PrintDocument.Print();
+            new PrintEvents().SetEventsToPrintDocs(doc.PrintSettings, printerName);
+            doc.Print();
         }
 
         private void SetPrintPages(string pages, PdfDocument doc)
         {
-            PrintDialog dialogPrint = new PrintDialog();
-            dialogPrint.AllowPrintToFile = true;
-            dialogPrint.AllowSomePages = true;
-            dialogPrint.PrinterSettings.MinimumPage = 1;
-            dialogPrint.PrinterSettings.MaximumPage = doc.Pages.Count;
+            int fromPage = 0;
+            int toPage = 0;
 
-            if (pages.Contains("-"))
+            bool isFromToPages = pages.Contains("-");
+            bool isSomePages = pages.Contains(",");
+
+            if (isFromToPages && isSomePages)
+            {
+                // + диапазон
+               // doc.PrintSettings.SelectSomePages(new int[] { 1, 3, 5, 7 });
+            }
+            else if (isFromToPages)
             {
                 string[] pagesSplited = pages.Split('-');
-                dialogPrint.PrinterSettings.FromPage = Convert.ToInt32(pagesSplited[0]);
-                dialogPrint.PrinterSettings.ToPage = Convert.ToInt32(pagesSplited[2]);
+                fromPage = Convert.ToInt32(pagesSplited[0]);
+                toPage = Convert.ToInt32(pagesSplited[2]);
+                doc.PrintSettings.SelectPageRange(fromPage, toPage);
+            }
+            else if(isSomePages)
+            {
+                var splited = pages.Split(',');
+                int[] pagesToPrint = Array.ConvertAll(splited, int.Parse);
+                doc.PrintSettings.SelectSomePages(pagesToPrint);
             }
             else
             {
-                dialogPrint.PrinterSettings.FromPage = Convert.ToInt32(pages);
-                dialogPrint.PrinterSettings.ToPage = Convert.ToInt32(pages);
+                //если указана только определенная стр
+                fromPage = Convert.ToInt32(pages);
+                toPage = Convert.ToInt32(pages);
+                doc.PrintSettings.SelectPageRange(fromPage, toPage);
             }
-
-            doc.PrintFromPage = dialogPrint.PrinterSettings.FromPage;
-            doc.PrintToPage = dialogPrint.PrinterSettings.ToPage;
-        }
-
-        public List<Printer> GetAllPrinters()
-        {
-            List<Printer> printers = new List<Printer>();
-
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_Printer");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            ManagementObjectCollection printersCollection = searcher.Get();
-
-            if (printersCollection != null && printersCollection.Count > 0)
-            {
-                foreach (var printer in printersCollection)
-                {
-                    printers.Add(new Printer
-                    {
-                        Prn_name = printer["Name"].ToString(),
-                        Pc_name = printer["SystemName"].ToString(),
-                        Status = printer.Properties["PrinterStatus"].Value.ToString(),
-                        Islocal = Convert.ToBoolean(printer.Properties["Local"].Value)
-                    });
-                }
-            }
-
-            return printers;
         }
     }
 }
