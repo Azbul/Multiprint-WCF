@@ -26,10 +26,10 @@ namespace WcfPrintService
                 {
                     printers.Add(new Printer
                     {
-                        Prn_name = printer["Name"].ToString(),
-                        Pc_name = printer["SystemName"].ToString(),
-                        Status = printer.Properties["PrinterStatus"].Value.ToString(),
-                        Islocal = Convert.ToBoolean(printer.Properties["Local"].Value)
+                        PrinterName = printer["Name"].ToString(),
+                        SystemName = printer["SystemName"].ToString(),
+                        PrinterStatus = printer.Properties["PrinterStatus"].Value.ToString(),
+                        IslocalPrinter = Convert.ToBoolean(printer.Properties["Local"].Value)
                     });
                 }
             }

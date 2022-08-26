@@ -10,10 +10,17 @@ namespace WcfPrintService
     public class PrintService : IPrintService
     {
         private DataBase _db;
+        private PrintFramework _printFramework;
 
         public PrintService()
         {
             _db = new DataBase();
+        }
+
+        public PrintService(PrintFramework printFramework)
+        {
+            _db = new DataBase();
+            _printFramework = printFramework;
         }
 
         public List<Printer> GetPrinters()

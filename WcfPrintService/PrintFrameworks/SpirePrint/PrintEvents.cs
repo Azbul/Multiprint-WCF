@@ -17,11 +17,11 @@ namespace WcfPrintService
         {
             using (UserContext db = new UserContext())
             {
-                var printer = db.Printers.FirstOrDefault(p => p.Prn_name == _printerName);
+                var printer = db.Printers.FirstOrDefault(p => p.PrinterName == _printerName);
 
                 if (printer != null)
                 {
-                    printer.Status = "Идет печать...";
+                    printer.PrinterStatus = "Идет печать...";
                     db.SaveChanges();
                 }
             }
@@ -31,11 +31,11 @@ namespace WcfPrintService
         {
             using (UserContext db = new UserContext())
             {
-                var printer = db.Printers.FirstOrDefault(p => p.Prn_name == _printerName);
+                var printer = db.Printers.FirstOrDefault(p => p.PrinterName == _printerName);
 
                 if (printer != null)
                 {
-                    printer.Status = "Готово";
+                    printer.PrinterStatus = "Готово";
                     db.SaveChanges();
                 }
             }

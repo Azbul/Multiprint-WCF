@@ -22,12 +22,19 @@ namespace WcfPrintService
 
         public override void PrintSelectedPages(string fileName, string printerName, string pages)
         {
-            throw new NotImplementedException();
+            /*
+              Repeat it for as many pages as necessary.
+             if (StartPagePrinter(hPrinter))
+                        {
+                            success = WritePrinter(hPrinter, pBytes, dwCount, out dwWritten);
+                            EndPagePrinter(hPrinter);
+                        }
+             */
         }
 
         #region Winspool methods
 
-        private bool SendFileToPrinter(string pdfFileName, string printerName)
+        private bool SendFileToPrinter(string fileName, string printerName)
         {
             try
             {
@@ -48,7 +55,7 @@ namespace WcfPrintService
 
                 pd.PrinterSettings.PrinterName = printerName;
 
-                string fullFilePath = Path.Combine(_filesPath, pdfFileName);
+                string fullFilePath = Path.Combine(_filesPath, fileName);
 
                 FileStream fs = new FileStream(fullFilePath, FileMode.Open);
 
@@ -62,7 +69,7 @@ namespace WcfPrintService
                 ptrUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);
                 Marshal.Copy(bytes, 0, ptrUnmanagedBytes, nLength);
 
-                success = SendBytesToPrinter(pd.PrinterSettings.PrinterName, ptrUnmanagedBytes, nLength);
+                success = SendBytesToPrinter(pd.PrinterSettings.PrinterName, fileName, ptrUnmanagedBytes, nLength);
                 Marshal.FreeCoTaskMem(ptrUnmanagedBytes);
                 return success;
             }
@@ -72,7 +79,7 @@ namespace WcfPrintService
             }
         }
 
-        private bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, int dwCount)
+        private bool SendBytesToPrinter(string szPrinterName, string fileName, IntPtr pBytes, int dwCount)
         {
             try
             {
@@ -81,8 +88,9 @@ namespace WcfPrintService
                 DOCINFOA di = new DOCINFOA();
                 bool success = false; 
 
-                di.pDocName = "PDF Document";
-                di.pDataType = "RAW";
+                di.pDocName = fileName;
+                //di.pDataType = "RAW"; //Win7
+                di.pDataType = "XPS_PASS"; //Win8+
 
                 if (OpenPrinter(szPrinterName.Normalize(), out hPrinter, IntPtr.Zero))
                 {

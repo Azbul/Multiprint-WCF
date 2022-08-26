@@ -4,12 +4,12 @@
     {
         public int Id { get; set; }
 
-        public string Prn_name { get; set; }
+        public string PrinterName { get; set; }
 
-        public string Status { get; set; }
+        public string PrinterStatus { get; set; }
 
-        public string Pc_name { get; set; }
+        public string SystemName { get; set; }
 
-        public bool Islocal { get; set; }
+        public bool IslocalPrinter { get; set; }
     }
 }
