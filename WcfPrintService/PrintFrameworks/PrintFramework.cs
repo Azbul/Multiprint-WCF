@@ -28,7 +28,7 @@ namespace WcfPrintService
                     {
                         PrinterName = printer["Name"].ToString(),
                         SystemName = printer["SystemName"].ToString(),
-                        PrinterStatus = printer.Properties["PrinterStatus"].Value.ToString(),
+                        PrinterStatus = printer.Properties["PrinterStatus"].Value.ToString() ?? "Unknown",
                         IslocalPrinter = Convert.ToBoolean(printer.Properties["Local"].Value)
                     });
                 }

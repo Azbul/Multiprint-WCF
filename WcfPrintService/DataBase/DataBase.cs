@@ -1,21 +1,20 @@
 ﻿using Logger;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace WcfPrintService
 {
     public class DataBase
     {
-        public List<Printer> GetPrintersFromDB()
+        public IQueryable<Printer> GetPrintersFromDB()
         {
-            List<Printer> printers = null;
+            IQueryable<Printer> printers = null;
 
             try
             {
-                using (UserContext db = new UserContext())
+                using (PrinterContext db = new PrinterContext())
                 {
-                    printers = db.Printers.ToList();
+                    printers = db.Printers;
                 }
             }
             catch (Exception ex)
@@ -26,15 +25,53 @@ namespace WcfPrintService
             return printers;
         }
 
-        public List<PrinterQueue> GetPrintersQueuesFromDB()
+        public Printer GetPrinterFromDBByName(string name)
         {
-            List<PrinterQueue> queues = null;
+            Printer printer = null;
 
             try
             {
-                using (UserContext db = new UserContext())
+                using (PrinterContext db = new PrinterContext())
                 {
-                    queues = db.PrintersQueues.ToList();
+                    printer = db.Printers.First(x => x.PrinterName == name);
+                }
+            }
+            catch (Exception ex)
+            {
+                FileLogger.Log($"AN EXCEPTION THROW ON GetPrinterFromDBByName: {ex}");
+            }
+
+            return printer;
+        }
+
+        public Printer GetPrinterFromDBById(int id)
+        {
+            Printer printer = null;
+
+            try
+            {
+                using (PrinterContext db = new PrinterContext())
+                {
+                    printer = db.Printers.First(x => x.Id == id);
+                }
+            }
+            catch (Exception ex)
+            {
+                FileLogger.Log($"AN EXCEPTION THROW ON GetPrinterFromDBById: {ex}");
+            }
+
+            return printer;
+        }
+
+        public IQueryable<PrinterQueue> GetPrintersQueuesFromDB()
+        {
+            IQueryable<PrinterQueue> queues = null;
+
+            try
+            {
+                using (PrinterContext db = new PrinterContext())
+                {
+                    queues = db.PrintersQueues;
                 }
             }
             catch (Exception ex)

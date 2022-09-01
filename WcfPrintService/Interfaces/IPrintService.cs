@@ -7,7 +7,7 @@ namespace WcfPrintService
     public interface IPrintService
     {
         [OperationContract]
-        bool Upload(FileMetaData metadata);
+        bool Upload(PrintDocData metadata);
 
         [OperationContract]
         List<Printer> GetPrinters();

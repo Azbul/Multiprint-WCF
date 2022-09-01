@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 
 namespace WcfPrintService
 {
@@ -25,12 +22,12 @@ namespace WcfPrintService
 
         public List<Printer> GetPrinters()
         {
-            return _db.GetPrintersFromDB();
+            return _db.GetPrintersFromDB().ToList();
         }
 
         public List<PrinterQueue> GetPrintersQueues()
         {
-            return _db.GetPrintersQueuesFromDB();
+            return _db.GetPrintersQueuesFromDB().ToList();
         }
 
         public void Print(string fileOrPath, int printerId, string pages)
@@ -43,7 +40,7 @@ namespace WcfPrintService
             throw new NotImplementedException();
         }
 
-        public bool Upload(FileMetaData metadata)
+        public bool Upload(PrintDocData metadata)
         {
             throw new NotImplementedException();
         }

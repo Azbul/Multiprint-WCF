@@ -15,7 +15,7 @@ namespace WcfPrintService
 
         private void PrintingInProgress(object sender, PrintEventArgs e)
         {
-            using (UserContext db = new UserContext())
+            using (PrinterContext db = new PrinterContext())
             {
                 var printer = db.Printers.FirstOrDefault(p => p.PrinterName == _printerName);
 
@@ -29,7 +29,7 @@ namespace WcfPrintService
 
         private void PrinterReady(object sender, PrintEventArgs e)
         {
-            using (UserContext db = new UserContext())
+            using (PrinterContext db = new PrinterContext())
             {
                 var printer = db.Printers.FirstOrDefault(p => p.PrinterName == _printerName);
 
