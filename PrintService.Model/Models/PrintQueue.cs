@@ -1,15 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WcfPrintService
+namespace PrintService.Model
 {
-    public class PrinterQueue
+    public class PrintQueue
     {
         public int Id { get; set; }
-
-        public int? FromPage { get; set; }
-
-        public int? ToPage { get; set; }
-
+        
         public string PagesToPrint { get; set; }
 
         [Required]
@@ -26,7 +22,7 @@ namespace WcfPrintService
         [Required]
         public int FileStatus { get; set; }
 
-        public int? PrintedConfirm { get; set; }
+        public bool PrintedConfirm { get; set; }
 
         [Required]
         public string PrintDateTime { get; set; }

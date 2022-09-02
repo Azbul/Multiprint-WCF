@@ -1,7 +1,7 @@
 ﻿using System.ServiceModel;
 using System.Collections.Generic;
 
-namespace WcfPrintService
+namespace PrintService.Model.Interfaces
 {
     [ServiceContract]
     public interface IPrintService
@@ -13,12 +13,15 @@ namespace WcfPrintService
         List<Printer> GetPrinters();
 
         [OperationContract]
-        void SetQueueDataToDb(PrinterQueue pqueue);
+        Printer GetPrinterByName(string name);
 
         [OperationContract]
-        List<PrinterQueue> GetPrintersQueues();
+        void AddPrintQueue(PrintQueue queue);
 
         [OperationContract]
-        void Print(string fileOrPath, int printerId, string pages);
+        List<PrintQueue> GetPrintQueues();
+
+        [OperationContract]
+        void Print(string fileName, string printerName, string pages);
     }
 }

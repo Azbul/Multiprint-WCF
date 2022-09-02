@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Management;
 using System.Collections.Generic;
+using PrintService.Model;
 
 namespace WcfPrintService
 {
@@ -8,9 +9,7 @@ namespace WcfPrintService
     {
         protected string _filesPath => @"C:\Program Files (x86)\IIS Express\FilesToPrint\";
 
-        public abstract void PrintAllPages(string fileName, string printerName);
-
-        public abstract void PrintSelectedPages(string fileName, string printerName, string pages);
+        public abstract void Print(string fileName, string printerName, string pages);
 
         public List<Printer> GetAllPrintersFromWin32Printer()
         {

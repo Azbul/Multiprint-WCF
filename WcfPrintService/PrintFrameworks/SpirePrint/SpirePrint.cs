@@ -6,18 +6,15 @@ namespace WcfPrintService
 {
     public class SpirePrint : PrintFramework
     {
-        public override void PrintAllPages(string fileName, string printerName) =>
-            Print(fileName, printerName, null);
-
-        public override void PrintSelectedPages(string fileName, string printerName, string pages) =>
-            Print(fileName, printerName, pages);
-
-        private void Print(string fileName, string printerName, string pages)
+        public override void Print(string fileName, string printerName, string pages)
         {
             PdfDocument doc = new PdfDocument();
             doc.LoadFromFile(fileName);
             doc.PrintSettings.PrinterName = printerName;
-            if (pages != null) SetPrintPages(pages, doc);
+
+            if (!string.IsNullOrEmpty(pages))
+                SetPrintPages(pages, doc);
+
             new PrintEvents().SetEventsToPrintDocs(doc.PrintSettings, printerName);
             doc.Print();
         }

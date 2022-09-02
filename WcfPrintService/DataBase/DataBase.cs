@@ -1,6 +1,7 @@
 ﻿using Logger;
 using System;
 using System.Linq;
+using PrintService.Model;
 
 namespace WcfPrintService
 {
@@ -25,7 +26,7 @@ namespace WcfPrintService
             return printers;
         }
 
-        public Printer GetPrinterFromDBByName(string name)
+        public Printer GetPrinterFromDbByName(string name)
         {
             Printer printer = null;
 
@@ -57,21 +58,21 @@ namespace WcfPrintService
             }
             catch (Exception ex)
             {
-                FileLogger.Log($"AN EXCEPTION THROW ON GetPrinterFromDBById: {ex}");
+                FileLogger.Log($"AN EXCEPTION THROW ON GetPrinterFromDbById: {ex}");
             }
 
             return printer;
         }
 
-        public IQueryable<PrinterQueue> GetPrintersQueuesFromDB()
+        public IQueryable<PrintQueue> GetPrintQueuesFromDB()
         {
-            IQueryable<PrinterQueue> queues = null;
+            IQueryable<PrintQueue> queues = null;
 
             try
             {
                 using (PrinterContext db = new PrinterContext())
                 {
-                    queues = db.PrintersQueues;
+                    queues = db.PrintQueues;
                 }
             }
             catch (Exception ex)
@@ -80,6 +81,22 @@ namespace WcfPrintService
             }
 
             return queues;
+        }
+
+        public void AddPrintQueueToDB(PrintQueue queue)
+        {
+            try
+            {
+                using (PrinterContext db = new PrinterContext())
+                {
+                    db.PrintQueues.Add(queue);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                FileLogger.Log($"AN EXCEPTION THOW ON AddPrintQueueToDB: {ex}");
+            }
         }
     }
 }

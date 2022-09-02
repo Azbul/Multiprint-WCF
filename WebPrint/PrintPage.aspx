@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="~/PrintPage.cs"%>
+﻿<%@ Page Language="C#" CodeBehind="~/PrintPage.cs" Inherits="WebPrint.PrintPage"%>
 
 <!DOCTYPE html>
 
@@ -30,7 +30,7 @@
     <ext:ResourceManager runat="server" Theme="Triton"/>
     
             
-    <ext:Store ID="Store1" runat="server">
+    <ext:Store ID="PrinterStore" runat="server">
         <Model>
             <ext:Model ID="model1" runat="server" IDProperty="pid">
                 <Fields>
@@ -73,7 +73,7 @@
 
                             <Items>
                                 <ext:ComboBox
-                                ID="ComboBox1"
+                                ID="SelectPrinterComboBox"
                                 runat="server"
                                 Width="500"
                                 Editable="false"
@@ -83,7 +83,7 @@
                                 ForceSelection="true"
                                 TriggerAction="All"
                                 Icon="PrinterEmpty"
-                                StoreID="Store1"
+                                StoreID="PrinterStore"
                                 EmptyText="Выберите принтер...">
 
                                 <ListConfig>
@@ -134,7 +134,7 @@
                             DefaultAnchor="100%">
 
                             <Items>
-                                <ext:Radio runat="server" ID="All" BoxLabel="Все" Name="pages" Checked="true">
+                                <ext:Radio runat="server" ID="AllPages" BoxLabel="Все" Name="pages" Checked="true">
                                 <Listeners>
                                      <Change Handler="#{pagesField}.enable();" />
                                     </Listeners>
@@ -145,7 +145,7 @@
                                     </Listeners>
                                 </ext:Radio>
                                 <ext:TextField 
-                                    ID="pagesField"
+                                    ID="PagesField"
                                     runat="server" 
                                     Disabled="true" 
                                     MaskRe="/[0-9,-]/"
@@ -155,7 +155,7 @@
                     </Items>
                 </ext:Container>
                 <ext:TextField
-                            ID="logField"
+                            ID="LogField"
                             runat="server"
                             Name="log"
                             ReadOnly="true"
@@ -304,7 +304,7 @@
         ID="GridPanel2"
         runat="server"
         ForceFit="true"
-        StoreID="Store1"
+        StoreID="PrinterStore"
         Width="600" 
         Height="400">
         

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WcfPrintService
+namespace PrintService.Model
 {
     public class Printer
     {

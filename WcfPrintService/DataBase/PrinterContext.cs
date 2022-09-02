@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using PrintService.Model;
 
 namespace WcfPrintService
 {
@@ -12,6 +13,6 @@ namespace WcfPrintService
 
         public DbSet<Printer> Printers { get; set; }
 
-        public DbSet<PrinterQueue> PrintersQueues { get; set; }
+        public DbSet<PrintQueue> PrintQueues { get; set; }
     }
 }

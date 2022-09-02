@@ -8,9 +8,14 @@ namespace WcfPrintService
 {
     public class WinspoolPrint : PrintFramework
     {
-        public override void PrintAllPages(string fileName, string printerName)
+        public override void Print(string fileName, string printerName, string pages)
         {
-            bool success = SendFileToPrinter(fileName, printerName);
+            bool success = false;
+
+            if (string.IsNullOrEmpty(pages))
+                success = SendFileToPrinter(fileName, printerName);
+            else
+                success = PrintSelectedPages(fileName, printerName, pages);
 
             if(success == false)
             {
@@ -20,7 +25,7 @@ namespace WcfPrintService
             }
         }
 
-        public override void PrintSelectedPages(string fileName, string printerName, string pages)
+        private bool PrintSelectedPages(string fileName, string printerName, string pages)
         {
             /*
               Repeat it for as many pages as necessary.
@@ -30,6 +35,7 @@ namespace WcfPrintService
                             EndPagePrinter(hPrinter);
                         }
              */
+            return false;
         }
 
         #region Winspool methods

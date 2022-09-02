@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using PrintService.Model;
+using System.Collections.Generic;
+using PrintService.Model.Interfaces;
 
 namespace WcfPrintService
 {
@@ -12,12 +14,12 @@ namespace WcfPrintService
         public PrintService()
         {
             _db = new DataBase();
+            _printFramework = new SpirePrint();
         }
 
-        public PrintService(PrintFramework printFramework)
+        public Printer GetPrinterByName(string name)
         {
-            _db = new DataBase();
-            _printFramework = printFramework;
+            return _db.GetPrinterFromDbByName(name);
         }
 
         public List<Printer> GetPrinters()
@@ -25,19 +27,19 @@ namespace WcfPrintService
             return _db.GetPrintersFromDB().ToList();
         }
 
-        public List<PrinterQueue> GetPrintersQueues()
+        public List<PrintQueue> GetPrintQueues()
         {
-            return _db.GetPrintersQueuesFromDB().ToList();
+            return _db.GetPrintQueuesFromDB().ToList();
         }
 
-        public void Print(string fileOrPath, int printerId, string pages)
+        public void Print(string fileName, string printerName, string pages)
         {
-            throw new NotImplementedException();
+            _printFramework.Print(fileName, printerName, pages);
         }
 
-        public void SetQueueDataToDb(PrinterQueue pqueue)
+        public void AddPrintQueue(PrintQueue queue)
         {
-            throw new NotImplementedException();
+            _db.AddPrintQueueToDB(queue);
         }
 
         public bool Upload(PrintDocData metadata)
