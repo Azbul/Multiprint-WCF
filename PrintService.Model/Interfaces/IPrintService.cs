@@ -7,7 +7,7 @@ namespace PrintService.Model.Interfaces
     public interface IPrintService
     {
         [OperationContract]
-        bool Upload(PrintDocData metadata);
+        bool Upload(string fileName, byte[] fileBytes);
 
         [OperationContract]
         List<Printer> GetPrinters();

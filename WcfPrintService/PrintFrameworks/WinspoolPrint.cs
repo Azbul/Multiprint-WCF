@@ -46,22 +46,9 @@ namespace WcfPrintService
             {
                 PrintDocument pd = new PrintDocument();
 
-                // TODO: Проверь как приходит имя принтера
-                #region Get Connected Printer Name
-
-                /* 
-                StringBuilder dp = new StringBuilder(256);
-                int size = dp.Capacity;
-                 if (GetDefaultPrinter(dp, ref size))
-                 {
-                    pd.PrinterSettings.PrinterName = dp.ToString().Trim();
-                 }
-                */
-                #endregion Get Connected Printer Name
-
                 pd.PrinterSettings.PrinterName = printerName;
 
-                string fullFilePath = Path.Combine(_filesPath, fileName);
+                string fullFilePath = Path.Combine(FilesPath, fileName);
 
                 FileStream fs = new FileStream(fullFilePath, FileMode.Open);
 

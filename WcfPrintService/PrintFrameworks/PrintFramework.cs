@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Management;
-using System.Collections.Generic;
 using PrintService.Model;
+using System.Collections.Generic;
 
 namespace WcfPrintService
 {
     public abstract class PrintFramework
     {
-        protected string _filesPath => @"C:\Program Files (x86)\IIS Express\FilesToPrint\";
+        public string FilesPath => @"C:\Program Files (x86)\IIS Express\FilesToPrint\";
 
         public abstract void Print(string fileName, string printerName, string pages);
 

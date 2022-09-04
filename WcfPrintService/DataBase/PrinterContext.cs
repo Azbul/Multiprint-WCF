@@ -8,7 +8,7 @@ namespace WcfPrintService
         public PrinterContext() 
             : base("PrinterDB")
         {
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<UserContext>());
+
         }
 
         public DbSet<Printer> Printers { get; set; }

@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IPrintService.cs" />
-    <Compile Include="Models\PrintDocData.cs" />
     <Compile Include="Models\Printer.cs" />
     <Compile Include="Models\PrintQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

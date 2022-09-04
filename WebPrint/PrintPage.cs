@@ -3,6 +3,7 @@ using Ext.Net;
 using System.Web;
 using PrintService.Model;
 using System.Collections;
+using System.ServiceModel;
 using PrintService.Model.Interfaces;
 
 namespace WebPrint
@@ -11,8 +12,8 @@ namespace WebPrint
     {
 
         private IPrintService _printService;
-        private string _selectedPrinterName;
-        private string _selectedFileName;
+        private string _selectedPrinterName { get; set; }
+        private string _selectedFileName { get; set; }
 
         public PrintPage()
         {
@@ -186,22 +187,14 @@ namespace WebPrint
             try
             {
                 HttpPostedFile file = X.GetCmp<FileUploadField>("UploadField").PostedFile;
-                var buff = new byte[1024];
-                int bytesRead = 0;
+                var buff = new byte[file.InputStream.Length];
+                
+                file.InputStream.Read(buff, 0, buff.Length);
+                file.InputStream.Close();
 
-                using (var inputStream = file.InputStream)
-                {
-                    bytesRead = inputStream.Read(buff, 0, buff.Length);
-                }
 
                 _selectedFileName = file.FileName;
-                succ = _printService.Upload(
-                    new PrintDocData
-                    {
-                        FileName = _selectedFileName,
-                        Buffer = buff,
-                        BytesRead = bytesRead
-                    });
+                succ = _printService.Upload(_selectedFileName, buff);
             }
             catch (Exception ex)
             {
@@ -234,6 +227,13 @@ namespace WebPrint
 
                 return true;
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            ((ICommunicationObject)_printService).Close();
         }
     }
 }

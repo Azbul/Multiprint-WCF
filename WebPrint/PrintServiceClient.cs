@@ -11,19 +11,13 @@ namespace WebPrint
         public PrintServiceClient()
         {
             _binding = new BasicHttpBinding();
-            _endpoint = new EndpointAddress("http://localhost:53432/PrintService");
+            _endpoint = new EndpointAddress("http://localhost:53432/PrintService/PrintService.svc");
         }
 
         public IPrintService GetPrintService()
         {
-            IPrintService service = null;
-
-            using (var channelFactory = new ChannelFactory<IPrintService>(_binding, _endpoint))
-            {
-                service = channelFactory.CreateChannel();
-            }
-
-            return service;
+            var channelFactory = new ChannelFactory<IPrintService>(_binding, _endpoint);
+            return channelFactory.CreateChannel();
         }
     }
 }
